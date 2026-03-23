@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 public class Main {
     static void main() {
-        InputUI input = new InputUI();
+        ElectionSystem[] availableElextionSystems = {};
+        InputUI input = new InputUI(availableElextionSystems);
         SystemConfiguration config = input.GetConfigurationFromUser();
         ArrayList<MandateResult> results = new ArrayList<MandateResult>();
         for(ElectionSystem system : config.electionSystems()) {
