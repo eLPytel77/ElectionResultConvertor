@@ -4,6 +4,7 @@ import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystem;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.Constituency;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.ConstituencyFactory;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.SystemConfiguration;
+import cz.cuni.mff.steinbao.electionResultConvertor.Exceptions.ParsingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class InputUI {
         return mergedConstituencies;
     }
 
-    public SystemConfiguration GetConfigurationFromUser() {
+    public SystemConfiguration GetConfigurationFromUser() throws ParsingException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Zadejte název vstupního souboru (obsahujícího výsledky voleb):");
         String filename = scanner.nextLine();

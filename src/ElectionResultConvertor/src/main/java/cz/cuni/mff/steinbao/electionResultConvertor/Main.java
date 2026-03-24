@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 public class Main {
+    //TODO Implement exception handling!!!
     static void main() {
         ElectionSystem[] availableElextionSystems = {};
         InputUI input = new InputUI(availableElextionSystems);
