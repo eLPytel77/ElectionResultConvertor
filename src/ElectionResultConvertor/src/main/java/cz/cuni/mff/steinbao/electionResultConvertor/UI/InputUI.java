@@ -9,30 +9,40 @@ import cz.cuni.mff.steinbao.electionResultConvertor.Exceptions.ParsingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class InputUI {
-    private final ElectionSystem[] availableSystems;
-    public InputUI(ElectionSystem[] electionSystems) {
+    private final List<Class<? extends ElectionSystem>> availableSystems;
+    public InputUI(List<Class<? extends ElectionSystem>> electionSystems) {
         this.availableSystems = electionSystems;
     }
 
     private void printSystems() {
         System.out.println("Volební systémy, které je možno vybrat jsou:");
-        for(int i = 0; i < availableSystems.length; ++i) {
-            System.out.println(i+") " + availableSystems[i].getName());
+        int index = 0;
+        for(var systemClass : availableSystems) {
+            System.out.println(index+") " + systemClass.getName());
+            ++index;
         }
         System.out.println();
     }
     private double loadThreshold() {
-        System.out.println("Zadejte aditivní klauzuli jako nezáporné číslo: ");
+        System.out.println("Zadejte uzavírací klauzuli jako nezáporné číslo: ");
         Scanner scanner = new Scanner(System.in);
         try {
             return scanner.nextDouble();
         } catch (Exception e) {
             return 0;
         }
-
-
+    }
+    private int loadMandatesCount() {
+        System.out.println("Zadejte počet mandátů jako kladné celé číslo: ");
+        Scanner scanner = new Scanner(System.in);
+        try {
+            return scanner.nextInt();
+        } catch (Exception e) {
+            return 0;
+        }
     }
     private List<ElectionSystem> loadSystems() {
         boolean chooseAnother = true;
@@ -41,14 +51,16 @@ public class InputUI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Zadejte pořadní číslo některého z vypsaných systémů: ");
         int systemIndex = scanner.nextInt();
-        availableSystems[systemIndex].setThreshold(loadThreshold());
-        choosenSystems.add(availableSystems[systemIndex]);
+        try {
+
+        } catch (Exception e) {}
+
         while (chooseAnother) {
             System.out.println("Pokud chcete vybrat další, zadejte znovu jeho pořadní číslo, jinak zadejte nečíselný znak: ");
             try {
                 systemIndex = scanner.nextInt();
-                availableSystems[systemIndex].setThreshold(loadThreshold());
-                choosenSystems.add(availableSystems[systemIndex]);
+                ElectionSystem system = (ElectionSystem) availableSystems.get(systemIndex).getConstructors()[0].newInstance(loadThreshold(), loadMandatesCount());
+                choosenSystems.add(system);
             } catch (Exception e) {
                 chooseAnother = false;
             }

@@ -1,0 +1,5 @@
+TODO:
+Implement six of the specified election systems
+Implement statistics computation
+Implement output UI
+Add Exception handling

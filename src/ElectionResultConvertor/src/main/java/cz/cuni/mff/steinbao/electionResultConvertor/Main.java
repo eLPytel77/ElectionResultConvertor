@@ -1,25 +1,30 @@
 package cz.cuni.mff.steinbao.electionResultConvertor;
 
 import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystem;
+import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.Statistics;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.MandateResult;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.SystemConfiguration;
 import cz.cuni.mff.steinbao.electionResultConvertor.UI.InputUI;
 import cz.cuni.mff.steinbao.electionResultConvertor.UI.OutputUI;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Main {
     //TODO Implement exception handling!!!
     static void main() {
-        ElectionSystem[] availableElextionSystems = {};
+        List<Class<? extends ElectionSystem>> availableElextionSystems = ElectionSystem.getAllSystemsClass();
         InputUI input = new InputUI(availableElextionSystems);
         SystemConfiguration config = input.GetConfigurationFromUser();
         ArrayList<MandateResult> results = new ArrayList<MandateResult>();
+        ArrayList<Statistics> stats = new ArrayList<>();
         for(ElectionSystem system : config.electionSystems()) {
-            results.add(system.countMandates(config.customizedConstituencies()));
+            var mandates = system.countMandates(config.customizedConstituencies());
+            results.add(mandates);
+            stats.add(Statistics.computeStats(mandates, config.customizedConstituencies()));
         }
         OutputUI output = new OutputUI();
-        output.showResults(results, config);
+        output.showResults(results, config, stats);
     }
 }
