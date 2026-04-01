@@ -1,5 +1,6 @@
 package cz.cuni.mff.steinbao.electionResultConvertor.Convertor;
 
+import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystems.DHondtDivisor;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.Constituency;
 import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.MandateResult;
 
@@ -22,6 +23,14 @@ public abstract class ElectionSystem {
     }
 
     public abstract MandateResult countMandates(List<Constituency> electionResults);
+
+    protected static MandateResult countSecondScrutunium(int remainingMandates, int unUsedVotes, HashMap<Integer, Integer> partyRemainingVotes) {
+        // Create a fake all republic constituency, then use DHondtDiviser class
+        List<Constituency> republic = new ArrayList<>();
+        republic.add(new Constituency(-1, "Czech republic", unUsedVotes, partyRemainingVotes));
+        ElectionSystem divisor = new DHondtDivisor(0, remainingMandates);
+        return divisor.countMandates(republic);
+    }
 
     private int getAllVotes(List<Constituency> electionResults) {
         int allVotes = 0;
