@@ -16,4 +16,8 @@ public class HagenbachBischoffovQuota extends QuotaSystem {
     protected int getQuota(int allVotes, int mandates) {
         return allVotes / (mandates + 1);
     }
+    @Override
+    public String getName() {
+        return "Hagenbach-Bischoffova kvóta";
+    }
 }

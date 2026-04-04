@@ -22,4 +22,8 @@ public class SaintLaguehDivisor extends DivisorSystem {
         }
         return divisorsSequence;
     }
+    @Override
+    public String getName() {
+        return "SaintLagueho dělitel";
+    }
 }

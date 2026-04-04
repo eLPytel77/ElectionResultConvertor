@@ -18,16 +18,18 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class ConstituencyFactory {
-    private static HashMap<Integer, Integer> loadPartyVotes(Node constituencyNode) {
+    /*private static HashMap<Integer, Integer> loadPartyVotes(Node constituencyNode) {
         HashMap<Integer, Integer> partyVotes = new HashMap<>();
         NodeList partiesVotesNodes = constituencyNode.getChildNodes();
-        for (int i = 1; i < partiesVotesNodes.getLength(); ++i) {
+        for (int i = 0; i < partiesVotesNodes.getLength(); ++i) {
             Node node = partiesVotesNodes.item(i);
-            partyVotes.put(Integer.parseInt(((Element)node).getAttribute("KSTRANA")), Integer.parseInt(((Element)node).getAttribute("HLASY")));
+            if (node.getNodeType() == Node.ELEMENT_NODE && !"UCAST".equals(node.getNodeName())) {
+                partyVotes.put(Integer.parseInt(((Element)node).getAttribute("KSTRANA")), Integer.parseInt(((Element)node).getAttribute("HLASY")));
+            }
         }
         return partyVotes;
-    }
-    public static List<Constituency> loadConsituencies(String filename) throws ParsingException {
+    }*/
+    public static SystemConfiguration loadConsituencies(String filename) throws ParsingException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
         Document document;
@@ -40,21 +42,36 @@ public class ConstituencyFactory {
         }
 
         NodeList nodeList = document.getElementsByTagName("KRAJ");
-        NodeList resultNodeList = document.getElementsByTagName("CELKEM");
         List<Constituency> returnList = new ArrayList<>();
+        HashMap<Integer, String> partyNames = new HashMap<>();
         for (int i = 0; i < nodeList.getLength(); ++i) {
-            Node node = nodeList.item(i);
-            Element elem = (Element) node;
-            int id = Integer.parseInt(elem.getAttribute("CIS_KRAJ"));
-            String name = elem.getAttribute("NAZ_KRAJ");
-            Node resultNode = resultNodeList.item(i);
+            Element krajElem = (Element) nodeList.item(i);
+            int id = Integer.parseInt(krajElem.getAttribute("CIS_KRAJ"));
+            String name = krajElem.getAttribute("NAZ_KRAJ");
 
-            Node infoNode = (resultNode.getChildNodes()).item(0);
-            int correctVotes = Integer.parseInt(((Element)infoNode).getAttribute("PLATNE_HLASY"));
-            var partyVotes = ConstituencyFactory.loadPartyVotes(resultNode);
+            // Find UCAST
+            NodeList ucastList = krajElem.getElementsByTagName("UCAST");
+            Element ucastElem = (Element) ucastList.item(0);
+            int correctVotes = Integer.parseInt(ucastElem.getAttribute("PLATNE_HLASY"));
+
+            // Find STRANA
+            NodeList stranaList = krajElem.getElementsByTagName("STRANA");
+            HashMap<Integer, Integer> partyVotes = new HashMap<>();
+            for (int j = 0; j < stranaList.getLength(); j++) {
+                Element stranaElem = (Element) stranaList.item(j);
+                int kstrana = Integer.parseInt(stranaElem.getAttribute("KSTRANA"));
+                String nazStr = stranaElem.getAttribute("NAZ_STR");
+                // Find HODNOTY_STRANA
+                NodeList hodnotyList = stranaElem.getElementsByTagName("HODNOTY_STRANA");
+                Element hodnotyElem = (Element) hodnotyList.item(0);
+                int hlasy = Integer.parseInt(hodnotyElem.getAttribute("HLASY"));
+                partyVotes.put(kstrana, hlasy);
+                partyNames.put(kstrana, nazStr);
+            }
+
             returnList.add(new Constituency(id, name, correctVotes, partyVotes));
         }
-        return returnList;
+        return new SystemConfiguration(new ArrayList<>(), returnList, partyNames);
     }
     public static Constituency mergeConstituencies(List<Constituency> constituencies) {
         String newName = "";

@@ -24,6 +24,15 @@ public abstract class ElectionSystem {
 
     public abstract MandateResult countMandates(List<Constituency> electionResults);
 
+    public abstract String getName();
+
+    public int getMandatesCount() {
+        return mandatesCount;
+    }
+    public double getThresholdPercentage() {
+        return this.thresholdPercentage;
+    }
+
     protected static MandateResult countSecondScrutunium(int remainingMandates, int unUsedVotes, HashMap<Integer, Integer> partyRemainingVotes) {
         // Create a fake all republic constituency, then use DHondtDiviser class
         List<Constituency> republic = new ArrayList<>();
@@ -32,7 +41,7 @@ public abstract class ElectionSystem {
         return divisor.countMandates(republic);
     }
 
-    private int getAllVotes(List<Constituency> electionResults) {
+    public static int getAllVotes(List<Constituency> electionResults) {
         int allVotes = 0;
         for (var constituency : electionResults) {
             allVotes += constituency.getAllVotes();
@@ -40,15 +49,20 @@ public abstract class ElectionSystem {
         return allVotes;
     }
 
+    public static HashMap<Integer, Integer> getVotesPerParty(List<Constituency> constituencyList) {
+        HashMap<Integer, Integer> tempVotesPerParty = new HashMap<>();
+        for (var constituency : constituencyList) {
+            for (var party : constituency.getVotesPerParty().entrySet()) {
+                tempVotesPerParty.put(party.getKey(), party.getValue()+tempVotesPerParty.getOrDefault(party.getKey(), 0));
+            }
+        }
+        return  tempVotesPerParty;
+    }
+
     protected Set<Integer> getPartiesOverThreshold(List<Constituency> electionResult) {
         int absoluteThresholdNumber = (int) (getAllVotes(electionResult) * thresholdPercentage / 100);
         //Count parties votes in the whole republic
-        HashMap<Integer, Integer> allVotesPerParty = new HashMap<>();
-        for (var constituency : electionResult) {
-            for (var party : constituency.getVotesPerParty().entrySet()) {
-                allVotesPerParty.put(party.getKey(), allVotesPerParty.getOrDefault(party.getKey(), 0) + party.getValue());
-            }
-        }
+        HashMap<Integer, Integer> allVotesPerParty = getVotesPerParty(electionResult);
         //Check if the parties have enough votes to bypass threshold
         Set<Integer> overThresholdParties = new HashSet<>();
         for (var party : allVotesPerParty.entrySet()) {
@@ -78,7 +92,7 @@ public abstract class ElectionSystem {
         if (dedicatedMandates < mandatesCount) {
             for (int i = 0; i < mandatesCount - dedicatedMandates; ++i) {
                 var constituency = remainders.get(i);
-                constituencySize.put(constituency.constituency(), constituencySize.get(constituency)+1);
+                constituencySize.put(constituency.constituency(), constituencySize.get(constituency.constituency())+1);
             }
         }
         return constituencySize;

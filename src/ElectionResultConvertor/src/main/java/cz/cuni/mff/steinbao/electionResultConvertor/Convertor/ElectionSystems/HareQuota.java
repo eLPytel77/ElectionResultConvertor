@@ -20,4 +20,8 @@ public class HareQuota extends QuotaSystem {
     protected int getQuota(int allVotes, int mandates) {
         return allVotes / mandates;
     }
+    @Override
+    public String getName() {
+        return "Harehova kvóta";
+    }
 }

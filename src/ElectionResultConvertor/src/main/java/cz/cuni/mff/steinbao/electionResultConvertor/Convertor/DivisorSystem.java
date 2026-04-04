@@ -30,7 +30,7 @@ public abstract class DivisorSystem extends ElectionSystem {
             //Chose the parties from the table
             for (int i = 0; i < constituencyMandates.get(constituency); ++i) {
                 Integer partyId = table.poll().partyId;
-                tempMandateRes.put(partyId, tempMandateRes.get(partyId)+1);
+                tempMandateRes.put(partyId, tempMandateRes.getOrDefault(partyId, 0)+1);
             }
         }
 

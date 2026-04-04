@@ -21,4 +21,8 @@ public class ImperialiDivisor extends DivisorSystem {
         }
         return divisorsSequence;
     }
+    @Override
+    public String getName() {
+        return "Imperialiho dělitel";
+    }
 }

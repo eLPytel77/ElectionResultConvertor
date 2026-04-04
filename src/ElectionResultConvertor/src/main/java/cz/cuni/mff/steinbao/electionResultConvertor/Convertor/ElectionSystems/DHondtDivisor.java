@@ -15,4 +15,8 @@ public class DHondtDivisor extends DivisorSystem {
         }
         return divisorsSequence;
     }
+    @Override
+    public String getName() {
+        return "D'Hondtův dělitel";
+    }
 }

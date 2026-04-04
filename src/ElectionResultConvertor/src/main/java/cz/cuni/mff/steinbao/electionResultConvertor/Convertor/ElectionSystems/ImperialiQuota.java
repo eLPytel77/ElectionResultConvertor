@@ -17,4 +17,8 @@ public class ImperialiQuota extends QuotaSystem {
     protected int getQuota(int allVotes, int mandates) {
         return allVotes / (mandates + 2);
     }
+    @Override
+    public String getName() {
+        return "Imperialiho kvóta";
+    }
 }

@@ -24,4 +24,5 @@ public class Constituency {
     }
     public int getAllVotes() {return this.allCorrectCastedVotes;}
     public HashMap<Integer, Integer> getVotesPerParty() {return this.votesPerParty;}
+
 }

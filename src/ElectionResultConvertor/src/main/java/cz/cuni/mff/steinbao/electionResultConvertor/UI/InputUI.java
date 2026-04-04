@@ -52,7 +52,8 @@ public class InputUI {
         System.out.println("Zadejte pořadní číslo některého z vypsaných systémů: ");
         int systemIndex = scanner.nextInt();
         try {
-
+            ElectionSystem system = (ElectionSystem) availableSystems.get(systemIndex).getConstructors()[0].newInstance(loadThreshold(), loadMandatesCount());
+            choosenSystems.add(system);
         } catch (Exception e) {}
 
         while (chooseAnother) {
@@ -78,15 +79,26 @@ public class InputUI {
         boolean mergeAnother = true;
         do {
             printConstituencies(mergedConstituencies);
-            System.out.println("Pokud chcete změnit uvažované volební obvody zadejte čísla, oddělená mezerou, označující obvody, které chcete sloučit:");
+            System.out.println("Pokud chcete změnit uvažované volební obvody zadejte čísla, oddělená mezerou, označující obvody, které chcete sloučit (nebo stiskněte Enter pro dokončení):");
             Scanner scanner = new Scanner(System.in);
-            List<Integer> idsToMerge = new ArrayList<>();
-            try {
-                while (scanner.hasNextInt()) {
-                    idsToMerge.add(scanner.nextInt());
-                }
-            } catch (Exception e) {
+            String line = scanner.nextLine().trim();
+            if (line.isEmpty()) {
                 mergeAnother = false;
+                continue;
+            }
+            String[] parts = line.split("\\s+");
+            List<Integer> idsToMerge = new ArrayList<>();
+            boolean validInput = true;
+            for (String part : parts) {
+                try {
+                    idsToMerge.add(Integer.parseInt(part));
+                } catch (NumberFormatException e) {
+                    validInput = false;
+                    break;
+                }
+            }
+            if (!validInput) {
+                System.out.println("Neplatný vstup. Zadejte pouze čísla oddělená mezerami nebo stiskněte Enter pro dokončení.");
                 continue;
             }
 
@@ -99,7 +111,11 @@ public class InputUI {
                     ++i;
                 }
             }
-            mergedConstituencies.add(ConstituencyFactory.mergeConstituencies(toMerge));
+            if (toMerge.size() > 1) {
+                mergedConstituencies.add(ConstituencyFactory.mergeConstituencies(toMerge));
+            } else if (toMerge.size() == 1) {
+                mergedConstituencies.addAll(toMerge);
+            }
 
         } while(mergeAnother);
         return mergedConstituencies;
@@ -109,10 +125,11 @@ public class InputUI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Zadejte název vstupního souboru (obsahujícího výsledky voleb):");
         String filename = scanner.nextLine();
-        List<Constituency> constituencies = ConstituencyFactory.loadConsituencies(filename);
+        var loadedData = ConstituencyFactory.loadConsituencies(filename);
+        List<Constituency> constituencies = loadedData.customizedConstituencies();
         constituencies = processConstituenciesMerge(constituencies);
         List<ElectionSystem> choosenSystems = loadSystems();
 
-        return new SystemConfiguration(choosenSystems, constituencies);
+        return new SystemConfiguration(choosenSystems, constituencies, loadedData.partyNames());
     }
 }
