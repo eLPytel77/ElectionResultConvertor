@@ -1,15 +1,18 @@
 package cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystems;
 
 import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.DivisorSystem;
-import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystem;
-import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.Constituency;
-import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.MandateResult;
 
-import java.util.List;
-
+/**
+ * Election system implementing the Saint-Laguë divisor method.
+ */
 public class SaintLaguehDivisor extends DivisorSystem {
 
-
+    /**
+     * Creates a Saint-Laguë divisor system instance.
+     *
+     * @param threshold minimum voting threshold percentage
+     * @param mandatesCount number of mandates to allocate
+     */
     public SaintLaguehDivisor(double threshold, int mandatesCount) {
         super(threshold, mandatesCount);
     }
@@ -22,6 +25,7 @@ public class SaintLaguehDivisor extends DivisorSystem {
         }
         return divisorsSequence;
     }
+
     @Override
     public String getName() {
         return "SaintLagueho dělitel";

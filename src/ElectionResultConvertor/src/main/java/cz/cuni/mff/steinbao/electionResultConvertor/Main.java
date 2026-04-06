@@ -14,7 +14,13 @@ import java.util.List;
 
 
 public class Main {
-    static void main() {
+    /**
+     * Runs the election result conversion process.
+     * <p>
+     * Reads voter data and system settings from the user, calculates
+     * mandates for each selected election system, and displays the results.
+     */
+    public static void main(String[] args) {
         try {
             List<Class<? extends ElectionSystem>> availableElextionSystems = ElectionSystem.getAllSystemsClass();
             InputUI input = new InputUI(availableElextionSystems);

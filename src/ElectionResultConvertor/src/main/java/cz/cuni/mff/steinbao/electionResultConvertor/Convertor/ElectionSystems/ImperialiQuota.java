@@ -1,14 +1,18 @@
 package cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystems;
 
-import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystem;
 import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.QuotaSystem;
-import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.Constituency;
-import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.MandateResult;
 
-import java.util.List;
-
+/**
+ * Election system using the Imperiali quota.
+ */
 public class ImperialiQuota extends QuotaSystem {
 
+    /**
+     * Creates an Imperiali quota system instance.
+     *
+     * @param threshold minimum voting threshold percentage
+     * @param mandates number of mandates to allocate
+     */
     public ImperialiQuota(double threshold, int mandates) {
         super(threshold, mandates);
     }
@@ -17,6 +21,7 @@ public class ImperialiQuota extends QuotaSystem {
     protected int getQuota(int allVotes, int mandates) {
         return allVotes / (mandates + 2);
     }
+
     @Override
     public String getName() {
         return "Imperialiho kvóta";

@@ -5,10 +5,28 @@ import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.MandateResult;
 
 import java.util.*;
 
+/**
+ * Base class for divisor-based election systems.
+ * <p>
+ * Applications provide a divisor sequence used to allocate mandates.
+ */
 public abstract class DivisorSystem extends ElectionSystem {
+    /**
+     * Creates a divisor-based election system.
+     *
+     * @param threshold minimum voting threshold percentage
+     * @param mandates total number of mandates to allocate
+     */
     public DivisorSystem(double threshold, int mandates) {
         super(threshold, mandates);
     }
+
+    /**
+     * Returns the divisor sequence used for allocation.
+     *
+     * @param count number of mandates in the constituency
+     * @return divisor array used to compute quotients
+     */
     protected abstract int[] getDivisors(int count);
 
     @Override
@@ -20,10 +38,13 @@ public abstract class DivisorSystem extends ElectionSystem {
 
         for (var constituency : electionResults) {
             //Fill the table
-            PriorityQueue<partyVotes> table = new PriorityQueue<>(Comparator.comparingInt(p -> p.votes));
+            PriorityQueue<partyVotes> table = new PriorityQueue<>(Comparator.comparingInt(p -> -p.votes));
             for (int i = 0; i < constituencyMandates.get(constituency); ++i) {
                 for (var party : constituency.getVotesPerParty().entrySet()) {
-                    table.add(new partyVotes(party.getKey(), party.getValue()/divisorsSequence[i]));
+                    if (validParties.contains(party.getKey())) {
+                        int currentdivisor = divisorsSequence[i];
+                        table.add(new partyVotes(party.getKey(), party.getValue()/currentdivisor));
+                    }
                 }
             }
 
@@ -36,5 +57,9 @@ public abstract class DivisorSystem extends ElectionSystem {
 
         return new MandateResult(tempMandateRes);
     }
+
+    /**
+     * Container for party vote quotients during divisor allocation.
+     */
     private record partyVotes(Integer partyId, Integer votes) {}
 }

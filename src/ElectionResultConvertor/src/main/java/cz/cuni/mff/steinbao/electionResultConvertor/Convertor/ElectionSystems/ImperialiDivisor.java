@@ -1,14 +1,18 @@
 package cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystems;
 
 import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.DivisorSystem;
-import cz.cuni.mff.steinbao.electionResultConvertor.Convertor.ElectionSystem;
-import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.Constituency;
-import cz.cuni.mff.steinbao.electionResultConvertor.DataTypes.MandateResult;
 
-import java.util.List;
-
+/**
+ * Election system using the Imperiali divisor method.
+ */
 public class ImperialiDivisor extends DivisorSystem {
 
+    /**
+     * Creates an Imperiali divisor system instance.
+     *
+     * @param threshold minimum voting threshold percentage
+     * @param mandates number of mandates to allocate
+     */
     public ImperialiDivisor(double threshold, int mandates) {
         super(threshold, mandates);
     }
@@ -21,6 +25,7 @@ public class ImperialiDivisor extends DivisorSystem {
         }
         return divisorsSequence;
     }
+
     @Override
     public String getName() {
         return "Imperialiho dělitel";

@@ -11,24 +11,21 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import cz.cuni.mff.steinbao.electionResultConvertor.Exceptions.ParsingException;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+/**
+ * Factory for loading and merging constituency data.
+ */
 public class ConstituencyFactory {
-    /*private static HashMap<Integer, Integer> loadPartyVotes(Node constituencyNode) {
-        HashMap<Integer, Integer> partyVotes = new HashMap<>();
-        NodeList partiesVotesNodes = constituencyNode.getChildNodes();
-        for (int i = 0; i < partiesVotesNodes.getLength(); ++i) {
-            Node node = partiesVotesNodes.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE && !"UCAST".equals(node.getNodeName())) {
-                partyVotes.put(Integer.parseInt(((Element)node).getAttribute("KSTRANA")), Integer.parseInt(((Element)node).getAttribute("HLASY")));
-            }
-        }
-        return partyVotes;
-    }*/
+    /**
+     * Loads constituencies from an XML file.
+     *
+     * @param filename XML file path containing election results
+     * @return system configuration with loaded constituencies and party names
+     * @throws ParsingException when the XML file cannot be parsed or loaded
+     */
     public static SystemConfiguration loadConsituencies(String filename) throws ParsingException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -73,12 +70,23 @@ public class ConstituencyFactory {
         }
         return new SystemConfiguration(new ArrayList<>(), returnList, partyNames);
     }
+
+    /**
+     * Merges multiple constituencies into a single combined constituency.
+     *
+     * @param constituencies list of constituencies to merge
+     * @return merged constituency containing combined votes and name
+     */
     public static Constituency mergeConstituencies(List<Constituency> constituencies) {
-        String newName = "";
+        StringBuilder newName = new StringBuilder();
         int allCorrectVotes = 0;
         HashMap<Integer, Integer> newPartyVotes = new HashMap<Integer, Integer>();
-        for (var constituency : constituencies) {
-            newName += constituency.getName() + ", ";
+        for (int i = 0; i < constituencies.size(); i++) {
+            var constituency = constituencies.get(i);
+            newName.append(constituency.getName());
+            if (i < constituencies.size() - 1) {
+                newName.append(", ");
+            }
             allCorrectVotes += constituency.getAllVotes();
             var currentVotesPerParty = constituency.getVotesPerParty();
             for (Integer key : currentVotesPerParty.keySet()) {
@@ -89,6 +97,6 @@ public class ConstituencyFactory {
                 }
             }
         }
-        return new Constituency(constituencies.getFirst().getId(), newName, allCorrectVotes, newPartyVotes);
+        return new Constituency(constituencies.getFirst().getId(), newName.toString(), allCorrectVotes, newPartyVotes);
     }
 }

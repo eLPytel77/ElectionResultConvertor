@@ -1,0 +1,34 @@
+Strana                                             |   Hlasy | % hlasů | D'Hondtů | Imperial |
+-----------------------------------------------------------------------------------------------
+"Rebelové web: re3elove.cz"                        |    4185 |    0.07% |        0 |        0 |
+Moravské zemské hnutí                              |    3842 |    0.07% |        0 |        0 |
+Jasný Signál Nezávislých                           |    4937 |    0.09% |        0 |        0 |
+VÝZVA 2025                                         |    6338 |    0.11% |        0 |        0 |
+SMS – Stát Má Sloužit                              |    2881 |    0.05% |        0 |        0 |
+Svoboda a přímá demokracie (SPD)                   |  437611 |    7.78% |       29 |       26 |
+ČSSD – Česká suverenita sociální demokracie        |   10263 |    0.18% |        0 |        0 |
+PŘÍSAHA občanské hnutí                             |   60503 |    1.08% |        0 |        0 |
+Levice                                             |    3318 |    0.06% |        0 |        0 |
+Česká republika na 1. místě!                       |   12455 |    0.22% |        0 |        0 |
+SPOLU (ODS, KDU-ČSL, TOP 09)                       | 1313346 |   23.36% |      104 |      107 |
+ŠVÝCARSKÁ DEMOKRACIE                               |   12097 |    0.22% |        0 |        0 |
+Urza.cz: Nechceme vaše hlasy                       |     282 |    0.01% |        0 |        0 |
+Hnutí občanů a podnikatelů                         |    3718 |    0.07% |        0 |        0 |
+Hnutí Generace                                     |   25176 |    0.45% |        0 |        0 |
+Česká pirátská strana                              |  504537 |    8.97% |       38 |       31 |
+Koruna Česká (monarch.str.Čech, Moravy a Slezska)  |    7313 |    0.13% |        0 |        0 |
+Volt Česko                                         |    3639 |    0.06% |        0 |        0 |
+Volte Pravý Blok www.cibulka.net                   |     429 |    0.01% |        0 |        0 |
+Motoristé sobě                                     |  380601 |    6.77% |       27 |       21 |
+Balbínova poetická strana                          |     612 |    0.01% |        0 |        0 |
+ANO 2011                                           | 1940507 |   34.52% |      154 |      171 |
+STAROSTOVÉ A NEZÁVISLÍ                             |  631512 |   11.23% |       48 |       44 |
+Hnutí Kruh                                         |    2209 |    0.04% |        0 |        0 |
+Stačilo!                                           |  242031 |    4.31% |        0 |        0 |
+Voluntia, protože dobrovol. je zákl. kamenem spol. |    7375 |    0.13% |        0 |        0 |
+
+Statistiky volebních systémů:
+Typ volebního systému | Počet mandátů | Uzavírací klauzule | Indikátor proporc. | Počet hlasů na mandát | Procento propadlých
+-------------------------------------------------------------------------------------------------------------------------
+D'Hondtův dělitel     |           400 |               5.7% |             0.0469 |            14054.2925 |             7.3572%
+Imperialiho dělitel   |           400 |               6.0% |             0.0724 |            14054.2925 |             7.3572%
