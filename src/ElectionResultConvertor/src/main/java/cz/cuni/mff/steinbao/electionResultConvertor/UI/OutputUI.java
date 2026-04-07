@@ -69,7 +69,8 @@ public class OutputUI {
             String.valueOf(totalVotes).length());
         int percentColumnWidth = VOTES_PERCENT_HEADER.length();
 
-        int systemTypeColumnWidth = Math.max(SYSTEM_TYPE_HEADER.length(), config.electionSystems().stream().mapToInt(system -> system.getName().length()).max().orElse(0));
+        int systemTypeColumnWidth = Math.max(SYSTEM_TYPE_HEADER.length(),
+            config.electionSystems().stream().mapToInt(system -> system.getName().length()).max().orElse(0));
         
         writer.printf("%-" + longestPartyName + "s | %" + votesColumnWidth + "s | %" + percentColumnWidth + "s |", 
             PARTY_HEADER, VOTES_HEADER, VOTES_PERCENT_HEADER);

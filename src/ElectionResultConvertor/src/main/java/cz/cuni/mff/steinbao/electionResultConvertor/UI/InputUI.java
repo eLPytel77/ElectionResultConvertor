@@ -129,10 +129,9 @@ public class InputUI {
      * @return merged constituency list after user selection
      */
     private List<Constituency> processConstituenciesMerge(List<Constituency> constituencies) {
-        List<Constituency> mergedConstituencies = constituencies;
         boolean mergeAnother = true;
         do {
-            printConstituencies(mergedConstituencies);
+            printConstituencies(constituencies);
             System.out.println("Pokud chcete změnit uvažované volební obvody zadejte čísla, oddělená mezerou, označující obvody, které chcete sloučit (nebo stiskněte Enter pro dokončení):");
             Scanner scanner = new Scanner(System.in);
             String line = scanner.nextLine().trim();
@@ -157,22 +156,22 @@ public class InputUI {
             }
 
             List<Constituency> toMerge = new ArrayList<>();
-            for (int i = 0; i < mergedConstituencies.size(); ) {
-                if (idsToMerge.contains(mergedConstituencies.get(i).getId())) {
-                    toMerge.add(mergedConstituencies.get(i));
-                    mergedConstituencies.remove(i);
+            for (int i = 0; i < constituencies.size(); ) {
+                if (idsToMerge.contains(constituencies.get(i).getId())) {
+                    toMerge.add(constituencies.get(i));
+                    constituencies.remove(i);
                 } else {
                     ++i;
                 }
             }
             if (toMerge.size() > 1) {
-                mergedConstituencies.add(ConstituencyFactory.mergeConstituencies(toMerge));
+                constituencies.add(ConstituencyFactory.mergeConstituencies(toMerge));
             } else if (toMerge.size() == 1) {
-                mergedConstituencies.addAll(toMerge);
+                constituencies.addAll(toMerge);
             }
 
         } while(mergeAnother);
-        return mergedConstituencies;
+        return constituencies;
     }
 
     /**

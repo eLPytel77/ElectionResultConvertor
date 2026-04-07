@@ -42,8 +42,7 @@ public abstract class DivisorSystem extends ElectionSystem {
             for (int i = 0; i < constituencyMandates.get(constituency); ++i) {
                 for (var party : constituency.getVotesPerParty().entrySet()) {
                     if (validParties.contains(party.getKey())) {
-                        int currentdivisor = divisorsSequence[i];
-                        table.add(new partyVotes(party.getKey(), party.getValue()/currentdivisor));
+                        table.add(new partyVotes(party.getKey(), party.getValue()/divisorsSequence[i]));
                     }
                 }
             }
